@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import {StyleSheet, Animated, Text, View, Dimensions} from 'react-native';
 import {SimpleAnimation} from 'react-native-simple-animations';
+import {NavigationContainer, StackActions} from '@react-navigation/native';
 
 class Splash extends Component {
   state = {};
 
   render() {
     setTimeout(() => {
-      this.props.navigation.navigate('home');
+      this.props.navigation.dispatch(StackActions.replace('home'));
       console.log('timeup');
     }, 2000);
 

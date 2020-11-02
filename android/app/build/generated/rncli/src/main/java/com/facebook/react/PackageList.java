@@ -17,6 +17,8 @@ import com.reactnativecommunity.art.ARTPackage;
 import org.reactnative.maskedview.RNCMaskedViewPackage;
 // react-native-gesture-handler
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+// react-native-image-picker
+import com.imagepicker.ImagePickerPackage;
 // react-native-linear-gradient
 import com.BV.LinearGradient.LinearGradientPackage;
 // react-native-reanimated
@@ -25,6 +27,10 @@ import com.swmansion.reanimated.ReanimatedPackage;
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 // react-native-screens
 import com.swmansion.rnscreens.RNScreensPackage;
+// react-native-snackbar
+import com.azendoo.reactnativesnackbar.SnackbarPackage;
+// react-native-sqlite-storage
+import org.pgsqlite.SQLitePluginPackage;
 // react-native-svg
 import com.horcrux.svg.SvgPackage;
 // react-native-vector-icons
@@ -77,10 +83,13 @@ public class PackageList {
       new ARTPackage(),
       new RNCMaskedViewPackage(),
       new RNGestureHandlerPackage(),
+      new ImagePickerPackage(),
       new LinearGradientPackage(),
       new ReanimatedPackage(),
       new SafeAreaContextPackage(),
       new RNScreensPackage(),
+      new SnackbarPackage(),
+      new SQLitePluginPackage(),
       new SvgPackage(),
       new VectorIconsPackage()
     ));

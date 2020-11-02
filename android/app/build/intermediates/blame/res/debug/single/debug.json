@@ -512,6 +512,10 @@
         "source": "/home/houssam/.gradle/caches/transforms-2/files-2.1/863e0c3c6716935cd3657ad638fd992d/material-1.1.0/res/layout/design_layout_tab_text.xml"
     },
     {
+        "merged": "/home/houssam/workspace/projects/ReactNative/MyNotes/android/app/build/intermediates/res/merged/debug/xml_provider_paths.xml.flat",
+        "source": "/home/houssam/workspace/projects/ReactNative/MyNotes/node_modules/react-native-image-picker/android/build/intermediates/packaged_res/debug/xml/provider_paths.xml"
+    },
+    {
         "merged": "/home/houssam/workspace/projects/ReactNative/MyNotes/android/app/build/intermediates/res/merged/debug/drawable-ldrtl-xxxhdpi-v17_abc_ic_menu_cut_mtrl_alpha.png.flat",
         "source": "/home/houssam/.gradle/caches/transforms-2/files-2.1/1cb9b9ea592aa2ea85233be252327dcf/appcompat-1.1.0/res/drawable-ldrtl-xxxhdpi-v17/abc_ic_menu_cut_mtrl_alpha.png"
     },
@@ -2466,6 +2470,10 @@
     {
         "merged": "/home/houssam/workspace/projects/ReactNative/MyNotes/android/app/build/intermediates/res/merged/debug/drawable_btn_radio_off_mtrl.xml.flat",
         "source": "/home/houssam/.gradle/caches/transforms-2/files-2.1/1cb9b9ea592aa2ea85233be252327dcf/appcompat-1.1.0/res/drawable/btn_radio_off_mtrl.xml"
+    },
+    {
+        "merged": "/home/houssam/workspace/projects/ReactNative/MyNotes/android/app/build/intermediates/res/merged/debug/layout_list_item.xml.flat",
+        "source": "/home/houssam/workspace/projects/ReactNative/MyNotes/node_modules/react-native-image-picker/android/build/intermediates/packaged_res/debug/layout/list_item.xml"
     },
     {
         "merged": "/home/houssam/workspace/projects/ReactNative/MyNotes/android/app/build/intermediates/res/merged/debug/layout_redbox_view.xml.flat",

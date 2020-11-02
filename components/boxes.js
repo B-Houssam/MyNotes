@@ -16,42 +16,40 @@ class Boxes extends Component {
   }
   render() {
     return (
-      <TouchableOpacity>
+      <BoxShadow
+        setting={{
+          height: Dimensions.get('screen').width / 5,
+          width: Dimensions.get('screen').width / 5,
+          color: '#a3b1c6',
+          border: 7,
+          radius: 10,
+          opacity: 0.13,
+          x: 3,
+          y: 3,
+        }}>
         <BoxShadow
           setting={{
             height: Dimensions.get('screen').width / 5,
             width: Dimensions.get('screen').width / 5,
-            color: '#a3b1c6',
+            color: '#fff',
             border: 7,
             radius: 10,
-            opacity: 0.13,
-            x: 3,
-            y: 3,
+            opacity: 0.12,
+            x: -2,
+            y: -2,
           }}>
-          <BoxShadow
-            setting={{
-              height: Dimensions.get('screen').width / 5,
-              width: Dimensions.get('screen').width / 5,
-              color: '#fff',
-              border: 7,
-              radius: 10,
-              opacity: 0.12,
-              x: -2,
-              y: -2,
-            }}>
-            <View style={styles.box}>
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontFamily: 'NunitoSans-Regular',
-                  color: '#1e5276',
-                }}>
-                {this.props.text}
-              </Text>
-            </View>
-          </BoxShadow>
+          <View style={styles.box}>
+            <Text
+              style={{
+                fontSize: 15,
+                fontFamily: 'NunitoSans-Regular',
+                color: '#1e5276',
+              }}>
+              {this.props.text}
+            </Text>
+          </View>
         </BoxShadow>
-      </TouchableOpacity>
+      </BoxShadow>
     );
   }
 }
