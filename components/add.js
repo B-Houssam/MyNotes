@@ -19,6 +19,7 @@ import RadioForm, {
   RadioButtonInput,
   RadioButtonLabel,
 } from 'react-native-simple-radio-button';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 
 import Database from '../db/db';
 
@@ -133,6 +134,10 @@ class Add extends Component {
           });
         }
       });
+    };
+
+    const choosLocation = () => {
+      this.props.navigation.dispatch(StackActions.push('loc'));
     };
 
     return (
@@ -272,7 +277,7 @@ class Add extends Component {
                 justifyContent: 'space-around',
                 marginBottom: 20,
               }}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={choosLocation}>
                 <BoxShadow
                   setting={{
                     height: 60,

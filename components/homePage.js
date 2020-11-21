@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   ActivityIndicator,
   FlatList,
+  Animated,
   Image,
   RefreshControl,
   ScrollView,
@@ -15,14 +16,14 @@ import {
 } from 'react-native';
 import {NavigationContainer, StackActions} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import SlidingUpPanel from 'rn-sliding-up-panel';
 import Boxes from '../components/boxes';
-import NoteBox from '../components/noteBox';
 import Database from '../db/db';
 import Snackbar from 'react-native-snackbar';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import Lightbox from 'react-native-lightbox';
 
 const db = new Database();
-const url = 'https://github.com/B-Houssam';
+//const url = 'https://github.com/B-Houssam';
 
 class Home extends Component {
   state = {
@@ -53,17 +54,55 @@ class Home extends Component {
   }
 
   renderItem = ({item}) => (
-    <TouchableWithoutFeedback onPress={() => this.drag(item.title)}>
-      <View>
-        <NoteBox
-          title={item.title}
-          date={item.cat}
-          desc={item.body}
-          location={item.location}
-          image={item.image}
-          cat={item.date}></NoteBox>
+    <View>
+      <View style={styles.out2}>
+        <View style={styles.box2}>
+          <Text style={styles.date2}>{item.cat}</Text>
+          <Text style={styles.cat2}>{item.title}</Text>
+          {item.body === '' ? (
+            <></>
+          ) : (
+            <Text numberOfLines={3} style={styles.desc2}>
+              {item.body}
+            </Text>
+          )}
+          {item.image === '' ? (
+            <></>
+          ) : (
+            <View
+              style={{
+                height: 150,
+                width: '100%',
+                marginTop: 15,
+              }}>
+              <Image style={styles.image2} source={{uri: item.image}} />
+            </View>
+          )}
+          {item.location === '' ? <></> : this.loc}
+          <View
+            style={{
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginTop: 10,
+            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '100%',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+              <Text style={styles.cat2}>{item.date}</Text>
+              <TouchableOpacity onPress={() => this.drag(item.title)}>
+                <Text style={styles.red2}>View this note</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
       </View>
-    </TouchableWithoutFeedback>
+    </View>
   );
   getProducts = () => {
     let notes = [];
@@ -98,14 +137,13 @@ class Home extends Component {
   };
 
   delNote = (title) => {
-    let note = {};
-    db.deleteNote(title).then((data) => {
-      this.setState({
-        nShown: {},
-      });
-      this._panel.hide();
-      this.getProducts();
+    db.deleteNote(title);
+    this.RBSheet.close();
+    this.setState({
+      nShown: {},
     });
+    this.getProducts();
+
     Snackbar.show({
       text: 'Note deleted... poof !',
       duration: Snackbar.LENGTH_SHORT,
@@ -119,7 +157,7 @@ class Home extends Component {
       loa: true,
     });
     this.getNote(title);
-    this._panel.show();
+    this.RBSheet.open();
   };
 
   render() {
@@ -210,7 +248,7 @@ class Home extends Component {
             marginLeft: 20,
             alignItems: 'center',
           }}>
-          <ScrollView horizontal={true}>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <TouchableOpacity onPress={() => changCat('All')}>
               <View style={{padding: 10}}>
                 <Boxes text="All"></Boxes>
@@ -301,37 +339,44 @@ class Home extends Component {
           </View>
         )}
 
-        <SlidingUpPanel
-          allowDragging={true}
-          ref={(c) => (this._panel = c)}
-          friction={0.1}
-          containerStyle={{
-            backgroundColor: '#e0e5ec',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            padding: 20,
+        <RBSheet
+          ref={(ref) => {
+            this.RBSheet = ref;
           }}
-          draggableRange={{
-            top: Dimensions.get('screen').height * 0.6,
-            bottom: 0,
-          }}>
+          height={500}
+          openDuration={50}
+          closeDuration={150}
+          animationType="fade"
+          /*
+          customStyles={{
+            container: {
+              padding: 20,
+              justifyContent: 'center',
+              alignItems: 'center',
+            },
+          }}*/
+        >
           {this.state.loa === true ? (
             <View
               style={{
                 alignItems: 'center',
                 justifyContent: 'center',
-                height: Dimensions.get('screen').height * 0.55,
+                height: 500,
               }}>
               <ActivityIndicator size="large" color="#1e5276" />
             </View>
           ) : (
-            <View style={{height: Dimensions.get('screen').height * 0.55}}>
+            <View
+              style={{
+                height: 450,
+              }}>
               <View
                 style={{
                   alignItems: 'center',
                   flexDirection: 'row',
                   justifyContent: 'space-between',
-                  marginBottom: 15,
+                  paddingVertical: 10,
+                  paddingHorizontal: 15,
                 }}>
                 <Text style={styles.date}>{this.state.nShown.cat}</Text>
                 <View
@@ -348,58 +393,66 @@ class Home extends Component {
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => {
-                      this._panel.hide();
+                      this.RBSheet.close();
                     }}>
                     <Icon name="window-close" size={30} color="#1e5276" />
                   </TouchableOpacity>
                 </View>
               </View>
-
-              <ScrollView>
-                <View style={{marginBottom: 10}}>
-                  <Text style={styles.title}>{this.state.nShown.title}</Text>
-                </View>
-                {this.state.nShown.body === '' ? (
-                  <></>
-                ) : (
-                  <View>
-                    <Text style={styles.body}>{this.state.nShown.body}</Text>
+              <View>
+                <ScrollView showsVerticalScrollIndicator={true}>
+                  <View style={{paddingHorizontal: 15}}>
+                    <Text style={styles.title}>{this.state.nShown.title}</Text>
                   </View>
-                )}
-                {this.state.nShown.location === '' ? (
-                  <></>
-                ) : (
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      marginTop: 10,
-                    }}>
-                    <Icon name="map-marker" size={20} color="#1e5276" />
-                    <Text style={styles.location}>
-                      {this.state.nShown.location}
-                    </Text>
-                  </View>
-                )}
-                {this.state.nShown.image === '' ? (
-                  <></>
-                ) : (
-                  <View
-                    style={{
-                      height: 250,
-                      width: '100%',
-                      marginTop: 15,
-                    }}>
-                    <Image
-                      style={styles.image}
-                      source={{uri: this.state.nShown.image}}
-                    />
-                  </View>
-                )}
-              </ScrollView>
+                  {this.state.nShown.body === '' ? (
+                    <></>
+                  ) : (
+                    <View style={{paddingHorizontal: 15, paddingVertical: 10}}>
+                      <Text style={styles.body}>{this.state.nShown.body}</Text>
+                    </View>
+                  )}
+                  {/*this.state.nShown.location === '' ? (
+                    <></>
+                  ) : (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginTop: 10,
+                      }}>
+                      <Icon name="map-marker" size={20} color="#1e5276" />
+                      <Text style={styles.location}>
+                        {this.state.nShown.location}
+                      </Text>
+                    </View>
+                  )*/}
+                  {this.state.nShown.image === '' ? (
+                    <></>
+                  ) : (
+                    <View
+                      style={{
+                        height: 250,
+                        width: '100%',
+                        padding: 15,
+                      }}>
+                      <Lightbox
+                        underlayColor="white"
+                        swipeToDismiss={false}
+                        springConfig={Animated.spring([], {
+                          useNativeDriver: true,
+                        })}>
+                        <Image
+                          style={styles.image}
+                          source={{uri: this.state.nShown.image}}
+                        />
+                      </Lightbox>
+                    </View>
+                  )}
+                </ScrollView>
+              </View>
             </View>
           )}
-        </SlidingUpPanel>
+        </RBSheet>
       </SafeAreaView>
     );
   }
@@ -438,7 +491,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     borderRadius: 5,
-    marginBottom: 10,
   },
   txt2: {
     color: '#1e5276',
@@ -475,6 +527,65 @@ const styles = StyleSheet.create({
   img: {
     width: '100%',
     height: '100%',
+    borderRadius: 5,
+  },
+
+  box2: {
+    backgroundColor: '#e0e5ec',
+    width: Dimensions.get('screen').width * 0.905,
+    borderRadius: 10,
+    alignItems: 'flex-start',
+    justifyContent: 'space-evenly',
+    flexDirection: 'column',
+    padding: 20,
+    elevation: 4,
+  },
+  out2: {
+    flexDirection: 'column',
+    paddingBottom: 15,
+    paddingTop: 15,
+    paddingLeft: 20,
+  },
+  date2: {
+    fontSize: 13,
+    fontFamily: 'NunitoSans-SemiBold',
+    color: '#b92627',
+    marginBottom: 10,
+  },
+  location2: {
+    fontSize: 15,
+    fontFamily: 'NunitoSans-ExtraBold',
+    color: '#1e5276',
+    marginLeft: 10,
+  },
+  red2: {
+    fontSize: 13,
+    fontFamily: 'NunitoSans-ExtraBold',
+    color: '#b92627',
+  },
+  loc2: {
+    marginTop: 20,
+  },
+  desc2: {
+    fontSize: 15,
+    fontFamily: 'NunitoSans-SemiBold',
+    color: '#1e5276',
+    marginTop: 10,
+  },
+  edit2: {
+    fontSize: 15,
+    fontFamily: 'NunitoSans-SemiBold',
+    color: '#b92627',
+  },
+  cat2: {
+    fontSize: 17,
+    fontFamily: 'NunitoSans-ExtraBold',
+    color: '#1e5276',
+  },
+  image2: {
+    width: '100%',
+    height: '100%',
+    //resizeMode: 'contain',
     borderRadius: 5,
   },
 });

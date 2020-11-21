@@ -13,6 +13,7 @@ import {
 import Splash from './components/splashScreen';
 import Home from './components/homePage';
 import Add from './components/add';
+import Loc from './components/loc';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -31,6 +32,7 @@ class App extends Component {
           }}
           initialRouteName="splash">
           <Stack.Screen name="splash" component={Splash} />
+          <Stack.Screen name="loc" component={Loc} />
           <Stack.Screen name="home" component={Home} />
           <Stack.Screen name="add" component={Add} />
         </Stack.Navigator>

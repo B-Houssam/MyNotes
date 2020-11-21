@@ -67,7 +67,18 @@ class NoteBox extends Component {
               alignItems: 'center',
               marginTop: 10,
             }}>
-            <Text style={styles.cat}>{this.props.cat}</Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '100%',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+              <Text style={styles.cat}>{this.props.cat}</Text>
+              <TouchableOpacity onPress={() => this.drag(this.props.title)}>
+                <Text style={styles.red}>View this note</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>
@@ -102,6 +113,11 @@ const styles = StyleSheet.create({
     fontFamily: 'NunitoSans-ExtraBold',
     color: '#1e5276',
     marginLeft: 10,
+  },
+  red: {
+    fontSize: 13,
+    fontFamily: 'NunitoSans-ExtraBold',
+    color: '#b92627',
   },
   loc: {
     marginTop: 20,

@@ -55,8 +55,8 @@
 31-->/home/houssam/workspace/projects/ReactNative/MyNotes/android/app/src/main/AndroidManifest.xml:17:9-41
 32            android:launchMode="singleTask"
 32-->/home/houssam/workspace/projects/ReactNative/MyNotes/android/app/src/main/AndroidManifest.xml:19:9-40
-33            android:windowSoftInputMode="adjustResize" >
-33-->/home/houssam/workspace/projects/ReactNative/MyNotes/android/app/src/main/AndroidManifest.xml:20:9-51
+33            android:windowSoftInputMode="adjustNothing" >
+33-->/home/houssam/workspace/projects/ReactNative/MyNotes/android/app/src/main/AndroidManifest.xml:20:9-52
 34            <intent-filter>
 34-->/home/houssam/workspace/projects/ReactNative/MyNotes/android/app/src/main/AndroidManifest.xml:21:9-24:25
 35                <action android:name="android.intent.action.MAIN" />
