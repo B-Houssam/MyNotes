@@ -17,10 +17,12 @@ import {
 import {NavigationContainer, StackActions} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Boxes from '../components/boxes';
+import Edit from '../components/edit';
 import Database from '../db/db';
 import Snackbar from 'react-native-snackbar';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import Lightbox from 'react-native-lightbox';
+import Lightbox from 'react-native-lightbox-v2';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 const db = new Database();
 //const url = 'https://github.com/B-Houssam';
@@ -36,6 +38,7 @@ class Home extends Component {
     index: 0,
     isFetching: true,
     loa: true,
+    showAlert: false,
   };
 
   constructor(props) {
@@ -136,20 +139,52 @@ class Home extends Component {
     });
   };
 
-  delNote = (title) => {
-    db.deleteNote(title);
+  editNote = (title, body, cat, image) => {
     this.RBSheet.close();
-    this.setState({
-      nShown: {},
-    });
-    this.getProducts();
+    console.log('Edit in home pressed');
+    this.props.navigation.dispatch(
+      StackActions.push('edit', {
+        title: title,
+        body: body,
+        cat: cat,
+        image: image,
+      }),
+    );
+  };
 
+  showAlert = () => {
+    this.setState({
+      showAlert: true,
+    });
+  };
+
+  hideAlert = () => {
+    this.setState({
+      showAlert: false,
+    });
+  };
+
+  /*
+  showSnack = () => {
     Snackbar.show({
-      text: 'Note deleted... poof !',
-      duration: Snackbar.LENGTH_SHORT,
+      text: 'Poof ... Note deleted !',
+      duration: Snackbar.LENGTH_LONG,
       fontFamily: 'NunitoSans-Regular',
       backgroundColor: '#1e5276',
     });
+  };
+  */
+
+  delNote = (title) => {
+    db.deleteNote(title).then(() => {
+      this.setState({
+        nShown: {},
+      });
+      this.RBSheet.close();
+      this.getProducts();
+    });
+    this.hideAlert();
+    //this.showSnack();
   };
 
   drag = (title) => {
@@ -161,6 +196,8 @@ class Home extends Component {
   };
 
   render() {
+    const {showAlert} = this.state;
+
     const onPress = () => {
       console.log('add pressed');
       this.props.navigation.dispatch(StackActions.push('add'));
@@ -276,7 +313,6 @@ class Home extends Component {
             </TouchableOpacity>
           </ScrollView>
         </View>
-
         <View
           style={{
             flexDirection: 'row',
@@ -338,30 +374,25 @@ class Home extends Component {
             />
           </View>
         )}
-
         <RBSheet
           ref={(ref) => {
             this.RBSheet = ref;
           }}
           height={500}
           openDuration={50}
-          closeDuration={150}
+          closeDuration={200}
           animationType="fade"
-          /*
           customStyles={{
             container: {
-              padding: 20,
-              justifyContent: 'center',
-              alignItems: 'center',
+              backgroundColor: '#e0e5ec',
             },
-          }}*/
-        >
+          }}>
           {this.state.loa === true ? (
             <View
               style={{
                 alignItems: 'center',
                 justifyContent: 'center',
-                height: 500,
+                height: 450,
               }}>
               <ActivityIndicator size="large" color="#1e5276" />
             </View>
@@ -384,11 +415,18 @@ class Home extends Component {
                     alignItems: 'center',
                     flexDirection: 'row',
                   }}>
-                  <TouchableOpacity
-                    onPress={() => this.delNote(this.state.nShown.title)}>
+                  <TouchableOpacity onPress={() => this.showAlert()}>
                     <Text style={styles.inst}>Delete</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.editNote(
+                        this.state.nShown.title,
+                        this.state.nShown.body,
+                        this.state.nShown.date,
+                        this.state.nShown.image,
+                      )
+                    }>
                     <Text style={styles.inst}>Edit</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -435,12 +473,7 @@ class Home extends Component {
                         width: '100%',
                         padding: 15,
                       }}>
-                      <Lightbox
-                        underlayColor="white"
-                        swipeToDismiss={false}
-                        springConfig={Animated.spring([], {
-                          useNativeDriver: true,
-                        })}>
+                      <Lightbox underlayColor="white" swipeToDismiss={true}>
                         <Image
                           style={styles.image}
                           source={{uri: this.state.nShown.image}}
@@ -453,6 +486,35 @@ class Home extends Component {
             </View>
           )}
         </RBSheet>
+        <AwesomeAlert
+          show={showAlert}
+          title="Are you sure ?"
+          message="You could lost your note FOREVER !"
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={false}
+          showCancelButton={true}
+          titleStyle={{fontFamily: 'NunitoSans-ExtraBold', color: '#1e5276'}}
+          messageStyle={{fontFamily: 'NunitoSans-Regular', color: '#1e5276'}}
+          cancelButtonTextStyle={{
+            fontFamily: 'NunitoSans-ExtraBold',
+          }}
+          confirmButtonTextStyle={{
+            fontFamily: 'NunitoSans-ExtraBold',
+          }}
+          contentContainerStyle={{backgroundColor: '#e0e5ec'}}
+          showConfirmButton={true}
+          useNativeDriver={true}
+          cancelText="No, cancel"
+          confirmText="Yes, delete it"
+          confirmButtonColor="#b92627"
+          onCancelPressed={() => {
+            this.hideAlert();
+          }}
+          onConfirmPressed={() => {
+            this.delNote(this.state.nShown.title);
+            this.RBSheet.close();
+          }}
+        />
       </SafeAreaView>
     );
   }

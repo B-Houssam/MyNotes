@@ -19,7 +19,6 @@ import RadioForm, {
   RadioButtonInput,
   RadioButtonLabel,
 } from 'react-native-simple-radio-button';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 
 import Database from '../db/db';
 

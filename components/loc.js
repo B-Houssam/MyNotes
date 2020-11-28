@@ -24,7 +24,7 @@ export default class Loc extends Component {
           }}
           query={{
             key: 'AIzaSyACdstfxag1l-SjsK2UV78twp_O0Pmg77Y',
-            language: 'en',
+            language: 'fr',
           }}
         />
       </SafeAreaView>

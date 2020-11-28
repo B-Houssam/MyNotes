@@ -217,11 +217,12 @@ export default class Database {
         .then((db) => {
           db.transaction((tx) => {
             tx.executeSql(
-              'UPDATE Notes SET body = ?, cat = ?, date = ?, location = ?, image = ? WHERE title = ?',
+              'UPDATE Notes SET title = ?, body = ?, cat = ?, date = ?, location = ?, image = ? WHERE title = ?',
               [
+                note.title,
                 note.body,
-                note.cat,
                 note.date,
+                note.cat,
                 note.location,
                 note.image,
                 title,

@@ -14,6 +14,7 @@ import Splash from './components/splashScreen';
 import Home from './components/homePage';
 import Add from './components/add';
 import Loc from './components/loc';
+import Edit from './components/edit';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -35,6 +36,7 @@ class App extends Component {
           <Stack.Screen name="loc" component={Loc} />
           <Stack.Screen name="home" component={Home} />
           <Stack.Screen name="add" component={Add} />
+          <Stack.Screen name="edit" component={Edit} />
         </Stack.Navigator>
       </NavigationContainer>
     );
